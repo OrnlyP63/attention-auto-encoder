@@ -25,7 +25,7 @@ class AttentionAutoEncoder(nn.Module):
     K = self.W_v @ X_t
     V = self.W_k @ X_t
 
-    K_transpose = K.transpose(0, 1)
+    K_transpose = K.transpose(-2, -1)
     Z = F.softmax((Q @ K_transpose) / torch.sqrt(self.d), dim=-1)
 
     A = Z @ V
