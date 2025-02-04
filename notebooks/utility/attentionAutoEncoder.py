@@ -62,3 +62,7 @@ class AttentionDataset(Dataset):
 
   def __getitem__(self, idx):
       return self.data[:, :, idx]  # Get item at index `idx`
+  
+def get_return_from_batch(X_t:torch.Tensor):
+   m, n = X_t.shape[0], X_t.shape[-1]
+   return X_t[:, 0, :].view(m, 1, n)
