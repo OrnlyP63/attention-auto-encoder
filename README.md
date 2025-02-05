@@ -39,6 +39,18 @@ The autoencoder model follow the chain of equations:
 $$\mathbf{Q} = \mathbf{W}_Q\mathbf{X},\quad \mathbf{K} = \mathbf{W}_K\mathbf{X},\quad \mathbf{V} = \mathbf{W}_V\mathbf{X}$$
 
 with $\mathbf{Q,\ W,\ V}\in \mathbb{R}^{d\times n}$
+
+$$\mathbf{Z} = \text{softmax}\left(\frac{\mathbf{QK}^\top}{\sqrt{d}}\right),\qquad \mathbf{A} = \mathbf{ZV}$$
+
+with $\mathbf{Z}\in \mathbb{R}^{d\times d}$ and $\mathbf{A}\in \mathbb{R}^{d\times n}$.
+
+Let $\mathbf{C}\in\mathbf{R}^d,\ \mathbf{W}_l\in\mathbf{R}^{n\times l}$ with $l<n$, be learnable parameters. We have
+$$\mathbf{S} = \mathbf{C}^\top \mathbf{A},\qquad \mathbf{L} = \text{ReLu}(\mathbf{SW}_l)$$ 
+Finally, we have $\mathbf{W}\in \mathbb{R}^{l\times n}$ then
+
+$$\hat{\mathbf{R}}_t = \mathbf{LW}$$
+
+with $\hat{\mathbf{R}}_t\in\mathbb{R}^{n}$
 - Key Features:
   - Captures complex patterns in cryptocurrency price returns.
   - Uses an attention mechanism to prioritize important features.
