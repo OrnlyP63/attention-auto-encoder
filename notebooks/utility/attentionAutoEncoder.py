@@ -36,22 +36,49 @@ class AttentionAutoEncoder(nn.Module):
 
     return R_hat
     
-def concate_data(df_dict: Dict[str, pd.DataFrame]):
+def concate_data(df_dict: Dict[str, pd.DataFrame], 
+                #  test_size:float = 0.2
+                day_split=None
+                 ):
   mask = df_dict['btc'].index
+  
+  if day_split is None:
+    test_size = 0.2
+    idx_split = int(len(mask) * test_size)
+    traing_idx = mask[:idx_split]
+    test_idx = mask[idx_split:]
+  else:
+    traing_idx = mask <= day_split
+    test_idx = mask > day_split
+
   returns = []
   nvt = []
   mvrv = []
+
+  test_returns = []
+  test_nvt = []
+  test_mvrv = []
+
   for tick in df_dict:
-    returns.append(df_dict[tick].loc[mask, 'returns'].values)
-    nvt.append(df_dict[tick].loc[mask, 'log_nvt'].values)
-    mvrv.append(df_dict[tick].loc[mask, 'log_mvrv'].values)
+    returns.append(df_dict[tick].loc[traing_idx, 'returns'].values)
+    nvt.append(df_dict[tick].loc[traing_idx, 'log_nvt'].values)
+    mvrv.append(df_dict[tick].loc[traing_idx, 'log_mvrv'].values)
+
+    test_returns.append(df_dict[tick].loc[test_idx, 'returns'].values)
+    test_nvt.append(df_dict[tick].loc[test_idx, 'log_nvt'].values)
+    test_mvrv.append(df_dict[tick].loc[test_idx, 'log_mvrv'].values)
 
   returns = np.vstack(returns)
   nvt = np.vstack(nvt)
   mvrv = np.vstack(mvrv)
   res = np.stack([returns, nvt, mvrv], axis=0)
 
-  return torch.tensor(res, dtype=torch.float)
+  test_returns = np.vstack(test_returns)
+  test_nvt = np.vstack(test_nvt)
+  test_mvrv = np.vstack(test_mvrv)
+  test_res = np.stack([test_returns, test_nvt, test_mvrv], axis=0)
+
+  return torch.tensor(res, dtype=torch.float), torch.tensor(test_res, dtype=torch.float)
 
 class AttentionDataset(Dataset):
   def __init__(self, data):
