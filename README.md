@@ -75,7 +75,7 @@ $$
 $$
 where $\mathbf{L}$ represents the compressed feature encoding. Finally, the reconstruction step is performed using the weight matrix $\mathbf{W} \in \mathbb{R}^{l\times n}$, producing the estimated cryptocurrency return vector:  
 $$
-\hat{\mathbf{R}}_t = \mathbf{L} \mathbf{W}
+\hat{\mathbf{R}_t} = \mathbf{L} \mathbf{W}
 $$
 where $\hat{\mathbf{R}}_t \in \mathbb{R}^{n}$ represents the reconstructed returns.  
 
@@ -103,7 +103,57 @@ This **attention-enhanced auto-encoder** effectively isolates **irregular market
 
   where **Transaction Volume** is the total on-chain transaction value over a given period.
 
-### Data Setup
+### Data Setup  
+
+We define the key financial indicators for each cryptocurrency at time $t$:  
+- $P_t$: Price of the cryptocurrency.  
+- $M_t$: Market Value to Realized Value (MVRV) ratio.  
+- $V_t$: Network Value to Transactions (NVT) ratio.  
+
+#### Feature Construction  
+
+To capture the market dynamics, we construct three main features:  
+
+1. **Log-returns of the cryptocurrency at time** $t$:  
+   $$R_t = \log\left(\frac{P_t}{P_{t-1}}\right)$$  
+   This measures the relative price change, commonly used in financial modeling.  
+
+2. **Differenced log-MVRV of the cryptocurrency at time** $t$:  
+   $$M'_t = \log\left(\frac{M_t}{M_{t-1}}\right)$$  
+   This represents the percentage change in the MVRV ratio, reflecting valuation shifts.  
+
+3. **Differenced log-NVT of the cryptocurrency at time** $t$:  
+   $$V'_t = \log\left(\frac{V_t}{V_{t-1}}\right)$$  
+   This tracks the relative change in the NVT ratio, indicating transaction activity variations.  
+
+#### Data Representation  
+
+At each time step $t$, we construct the feature matrix **$X_t$** by organizing these indicators for multiple cryptocurrencies.  
+For $n$ cryptocurrencies, we define:  
+
+- **Log-returns vector**: $\mathbf{R}_t = [R_1, R_2, \dots, R_n]_t$  
+- **Differenced log-MVRV vector**: $\mathbf{M}'_t = [M'_1, M'_2, \dots, M'_n]_t$  
+- **Differenced log-NVT vector**: $\mathbf{V}'_t = [V'_1, V'_2, \dots, V'_n]_t$  
+
+The full feature matrix is then structured as:  
+$$
+X_t = 
+\begin{bmatrix}
+R_1 & R_2 & \dots & R_n \\
+M'_1 & M'_2 & \dots & M'_n \\
+V'_1 & V'_2 & \dots & V'_n
+\end{bmatrix}_t \in \mathbb{R}^{3\times n}
+$$  
+where $n$ represents the number of cryptocurrencies in the dataset.  
+
+#### Attention Auto-encoder Mapping  
+
+The **attention-based auto-encoder** model, denoted as $\Phi$, is designed to learn meaningful representations from the feature matrix and reconstruct expected returns:  
+$$
+\Phi: X_t \rightarrow \hat{\mathbf{R}}_t
+$$  
+where $\hat{\mathbf{R}}_t$ is the predicted return vector. By leveraging attention mechanisms, this model captures complex dependencies between asset returns and blockchain-based indicators, enhancing anomaly detection capabilities.  
+
 
 ---
 
