@@ -28,35 +28,82 @@ The attention mechanism enhances the Auto-Encoder’s ability to focus on the mo
 ---
 
 ## Methodology
-- Model: Attention-based Auto-encoder for anomaly detection.
+### Attention-based Auto-encoder for Anomaly Detection  
 
-Let $\mathbf{Y}_t\equiv \mathbf{X}\in \mathbb{R}^{d\times n}$ be the data point matrix given observation $t$ where $d$ is the number of feature inputs and $n$ is the number of currencies.
+Anomaly detection in cryptocurrency markets requires an adaptive model capable of capturing complex patterns in high-dimensional data. We employ an **attention-based auto-encoder**, which leverages self-attention mechanisms to focus on the most relevant features in the data. This enhances the model’s ability to detect deviations from normal price behavior.  
 
-Let $\mathbf{W}_Q,\ \mathbf{W}_K, \mathbf{W}_V\in \mathbb{R}^{d\times d}$ be the learnable parameter matrices.
+#### Mathematical Formulation  
 
-The autoencoder model follow the chain of equations:
+Let $\mathbf{Y}_t \equiv \mathbf{X} \in \mathbb{R}^{d\times n}$ be the data matrix at time step $t$, where:  
+- $d$ is the number of feature inputs (on-chain indicators and price-related metrics).  
+- $n$ is the number of cryptocurrencies being analyzed.  
 
-$$\mathbf{Q} = \mathbf{W}_Q\mathbf{X},\quad \mathbf{K} = \mathbf{W}_K\mathbf{X},\quad \mathbf{V} = \mathbf{W}_V\mathbf{X}$$
+We define the learnable **weight matrices** for the attention mechanism:  
 
-with $\mathbf{Q,\ W,\ V}\in \mathbb{R}^{d\times n}$
+$$
+\mathbf{W}_Q, \mathbf{W}_K, \mathbf{W}_V \in \mathbb{R}^{d\times d}
+$$
 
-$$\mathbf{Z} = \text{softmax}\left(\frac{\mathbf{QK}^\top}{\sqrt{d}}\right),\qquad \mathbf{A} = \mathbf{ZV}$$
+which transform the input matrix $\mathbf{X}$ into the **query**, **key**, and **value** representations: 
 
-with $\mathbf{Z}\in \mathbb{R}^{d\times d}$ and $\mathbf{A}\in \mathbb{R}^{d\times n}$.
+$$
+\mathbf{Q} = \mathbf{W}_Q\mathbf{X}, \quad \mathbf{K} = \mathbf{W}_K\mathbf{X}, \quad \mathbf{V} = \mathbf{W}_V\mathbf{X}
+$$
 
-Let $\mathbf{C}\in\mathbf{R}^d,\ \mathbf{W}_l\in\mathbf{R}^{n\times l}$ with $l<n$, be learnable parameters. We have
-$$\mathbf{S} = \mathbf{C}^\top \mathbf{A},\qquad \mathbf{L} = \text{ReLu}(\mathbf{SW}_l)$$ 
-Finally, we have $\mathbf{W}\in \mathbb{R}^{l\times n}$ then
+where $\mathbf{Q}, \mathbf{K}, \mathbf{V} \in \mathbb{R}^{d\times n}$.  
 
-$$\hat{\mathbf{R}}_t = \mathbf{LW}$$
+To compute the **attention matrix**, we apply the scaled dot-product attention mechanism:  
 
-with $\hat{\mathbf{R}}_t\in\mathbb{R}^{n}$
-- Key Features:
-  - Captures complex patterns in cryptocurrency price returns.
-  - Uses an attention mechanism to prioritize important features.
-- On-Chain Indicators Used:
-  - Market-Value-to-Realized-Value (MVRV): Identifies overvaluation/undervaluation.
-  - Network-Value-to-Transaction (NVT) Ratio: Assesses network activity and speculative behavior.
+$$
+\mathbf{Z} = \text{softmax} \left(\frac{\mathbf{QK}^\top}{\sqrt{d}}\right)
+$$
+
+which ensures numerical stability by normalizing the attention scores. The **weighted feature representation** is then given by:  
+
+$$
+\mathbf{A} = \mathbf{ZV}
+$$
+
+where $\mathbf{Z} \in \mathbb{R}^{d\times d}$ and $\mathbf{A} \in \mathbb{R}^{d\times n}$ represent the refined feature space, emphasizing relevant patterns for anomaly detection.  
+
+#### Latent Space Representation and Reconstruction  
+
+To project the data into a lower-dimensional latent space, we introduce a learnable **context vector** $\mathbf{C} \in \mathbb{R}^d$ and weight matrix $\mathbf{W}_l \in \mathbb{R}^{n\times l}$ with $l < n$:
+
+$$
+\mathbf{S} = \mathbf{C}^\top \mathbf{A}, \quad \mathbf{L} = \text{ReLU}(\mathbf{S} \mathbf{W}_l)
+$$
+where $\mathbf{L}$ represents the compressed feature encoding. Finally, the reconstruction step is performed using the weight matrix $\mathbf{W} \in \mathbb{R}^{l\times n}$, producing the estimated cryptocurrency return vector:  
+$$
+\hat{\mathbf{R}}_t = \mathbf{L} \mathbf{W}
+$$
+where $\hat{\mathbf{R}}_t \in \mathbb{R}^{n}$ represents the reconstructed returns.  
+
+This **attention-enhanced auto-encoder** effectively isolates **irregular market behaviors** by comparing actual and reconstructed price movements, identifying anomalies that deviate from learned market dynamics.  
+
+### On-Chain Indicators Data
+
+  1. Market-Value-to-Realized-Value (MVRV): Identifies overvaluation/undervaluation.
+   
+    The MVRV ratio compares a cryptocurrency’s market capitalization to its realized capitalization, showing whether the asset is overvalued or undervalued. A high MVRV suggests that holders have large unrealized profits, increasing the risk of profit-taking and price corrections. A low MVRV indicates potential buying opportunities as the asset may be undervalued. This metric helps traders identify market tops and bottoms for better entry and exit decisions. The MVRV ratio is defined as: 
+    
+  $$MVRV = \frac{\text{Market Value}}{\text{Realized Value}}$$
+
+  where **Market value (Market Capitalization)** is the total market worth of all circulating coins 
+  $$\text{Market Value} = \text{Price} \times \text{Circulating Supply}$$
+  
+  and Realized Value is the sum of all coins valued at their last moved price: 
+  $$\text{Realized Value} = \sum_{i=1}^{N} \text{Price}_i \times \text{Coins}_{i}$$
+
+  1. Network-Value-to-Transaction (NVT) Ratio: Assesses network activity and speculative behavior.
+
+    The NVT ratio compares a cryptocurrency’s market value to its transaction volume, similar to the P/E ratio in stocks. A high NVT suggests overvaluation or speculation, while a low NVT indicates strong network fundamentals and a healthier valuation. This ratio helps detect bubbles and undervaluation, providing insights beyond price movements for better trading strategies. The NVT ratio is given by:
+  
+  $$NVT = \frac{\text{Market Value}}{\text{Transaction Volume}}$$
+
+  where **Transaction Volume** is the total on-chain transaction value over a given period.
+
+### Data Setup
 
 ---
 
