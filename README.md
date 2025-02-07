@@ -148,6 +148,7 @@ where $n$ represents the number of cryptocurrencies in the dataset.
 
 #### Attention Auto-encoder Mapping  
 
+![](./auto-encode.png)
 The **attention-based auto-encoder** model, denoted as $\Phi$, is designed to learn meaningful representations from the feature matrix and reconstruct expected returns:  
 $$
 \Phi: X_t \rightarrow \hat{\mathbf{R}}_t
