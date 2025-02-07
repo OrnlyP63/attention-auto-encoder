@@ -154,14 +154,48 @@ $$
 $$  
 where $\hat{\mathbf{R}}_t$ is the predicted return vector. By leveraging attention mechanisms, this model captures complex dependencies between asset returns and blockchain-based indicators, enhancing anomaly detection capabilities.  
 
+#### Anomaly-Rebalance Strategy
+1. Define Prediction Errors from Training Data
+
+Train a predictive model to estimate asset returns:
+$$\hat{R}_t = \Phi(X_t)$$
+
+where $X_t$ represents relevant features at time $t$.
+
+Compute the prediction errors:
+$$\text{errors}_t = \hat{R}_t - R_t$$
+where $R_t$ is the actual return at time $t$.
+
+Then, let $\text{errors}_i = \{\text{errors}_1, \text{errors}_2, \ldots, \text{errors}_T\}$ be all errors of training data of asset $i$.
+
+2. Set Anomaly Thresholds
+Define a threshold for each asset based on the **10th percentile (quantile)** of errors from the training data:
+$$T_i = Q_{10}(\text{errors}_i)$$
+
+where $T_i$ is the threshold for asset $i$.
+
+3. Rebalancing Rule Based on Test Data
+   
+During the test phase (live trading or backtesting), 
+
+compute new errors using the test set:
+$$\text{errors}_t = \hat{R}_t - R_t$$
+
+identify assets where the error is below the threshold:
+
+$$\text{errors}_{i,t} < T_i$$
+
+These assets are considered **undervalued**.
+
+Rebalance the portfolio by allocating **equal weights** to the undervalued assets:
+
+$$w_i = \frac{1}{\text{number of selected assets}}$$
 
 ---
 
-## Results & Insights 
+## Results
 
-- The attention mechanism improves the model’s ability to detect abnormal market behaviors.
-- Early anomaly detection provides real-time trading signals for risk mitigation and profit opportunities.
-- The approach enhances decision-making by revealing patterns not visible through traditional price analysis.
+![](./notebooks/results.png)
 
 ---
 
@@ -171,8 +205,3 @@ where $\hat{\mathbf{R}}_t$ is the predicted return vector. By leveraging attenti
 - Next Steps: Testing on additional on-chain metrics and real-time deployment for automated trading.
 
 ---
-
-## Visuals & Data Representations 📈
-- Diagram of the Attention-based Auto-encoder architecture.
-- Example of detected anomalous market behaviors with MVRV & NVT trends.
-- Performance comparison of the model against traditional methods.
