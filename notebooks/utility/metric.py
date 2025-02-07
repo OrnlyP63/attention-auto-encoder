@@ -39,7 +39,7 @@ def plot_profit(returns_list: list, labels: list):
     # plt.show()  # Ensure display of the plot
 
 def anomaly_rebalance_strategy2(returns: np.array, anomaly: np.array):
-  anomaly = ~anomaly[:-1, :]
+  anomaly = anomaly[:-1, :]
   portfolio_weights = [np.ones(anomaly.shape[1]) / anomaly.shape[1]]
   weight = np.ones(returns.shape[1]) / returns.shape[1]
 

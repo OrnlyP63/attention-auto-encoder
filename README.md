@@ -158,7 +158,7 @@ where $\hat{\mathbf{R}}_t$ is the predicted return vector. By leveraging attenti
 1. Define Prediction Errors from Training Data
 
 Train a predictive model to estimate asset returns:
-$$\hat{R}_t = \Phi(X_t)$$
+$$\hat{R}_t = \Phi(X_{t})$$
 
 where $X_t$ represents relevant features at time $t$.
 
@@ -169,8 +169,8 @@ where $R_t$ is the actual return at time $t$.
 Then, let $\text{errors}_i = \{\text{errors}_1, \text{errors}_2, \ldots, \text{errors}_T\}$ be all errors of training data of asset $i$.
 
 2. Set Anomaly Thresholds
-Define a threshold for each asset based on the **10th percentile (quantile)** of errors from the training data:
-$$T_i = Q_{10}(\text{errors}_i)$$
+Define a threshold for each asset based on the **q-th percentile (quantile)** of errors from the training data:
+$$T_i = Q_{q}(\text{errors}_i)$$
 
 where $T_i$ is the threshold for asset $i$.
 
@@ -183,7 +183,7 @@ $$\text{errors}_t = \hat{R}_t - R_t$$
 
 identify assets where the error is below the threshold:
 
-$$\text{errors}_{i,t} < T_i$$
+$$\text{errors}_{i,t} \geq T_i$$
 
 These assets are considered **undervalued**.
 
@@ -195,13 +195,13 @@ $$w_i = \frac{1}{\text{number of selected assets}}$$
 
 ## Results
 
-![](./notebooks/results.png)
+![](./output_new.png)
 
 ---
 
-## Conclusion & Future Work 
-- Key Contribution: A novel anomaly detection method leveraging on-chain data + deep learning.
-- Real-World Impact: Can be used by traders and investors to anticipate market shifts.
-- Next Steps: Testing on additional on-chain metrics and real-time deployment for automated trading.
+## Conclusion & Future Work  
+
+This study introduces a novel anomaly detection-based trading strategy that leverages on-chain data and deep learning. By identifying undervalued assets through predictive errors and rebalancing accordingly, the **Anomaly-Rebalance Strategy** demonstrated superior performance compared to a traditional **Equal Weight Strategy**, outperforming it by a factor of **1.075**. The optimal threshold for detecting anomalies was found to be the **93rd percentile**, highlighting the effectiveness of dynamic thresholding in financial decision-making. This strategy has practical implications for traders and investors, providing a systematic approach to anticipating market shifts. Future work will focus on incorporating additional on-chain metrics, refining model parameters, and deploying the strategy in real-time for automated trading.  
+
 
 ---
