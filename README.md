@@ -84,23 +84,15 @@ This **attention-enhanced auto-encoder** effectively isolates **irregular market
 
   1. Market-Value-to-Realized-Value (MVRV): Identifies overvaluation/undervaluation.
    
-    The MVRV ratio compares a cryptocurrency’s market capitalization to its realized capitalization, showing whether the asset is overvalued or undervalued. A high MVRV suggests that holders have large unrealized profits, increasing the risk of profit-taking and price corrections. A low MVRV indicates potential buying opportunities as the asset may be undervalued. This metric helps traders identify market tops and bottoms for better entry and exit decisions. The MVRV ratio is defined as: 
-    
-  $$MVRV = \frac{\text{Market Value}}{\text{Realized Value}}$$
+    The MVRV ratio compares a cryptocurrency’s market capitalization to its realized capitalization, showing whether the asset is overvalued or undervalued. A high MVRV suggests that holders have large unrealized profits, increasing the risk of profit-taking and price corrections. A low MVRV indicates potential buying opportunities as the asset may be undervalued. This metric helps traders identify market tops and bottoms for better entry and exit decisions. The MVRV ratio is defined as: $$MVRV = \frac{\text{Market Value}}{\text{Realized Value}}$$
 
-  where **Market value (Market Capitalization)** is the total market worth of all circulating coins 
-
-  $$\text{Market Value} = \text{Price} \times \text{Circulating Supply}$$
+  where **Market value (Market Capitalization)** is the total market worth of all circulating coins $$\text{Market Value} = \text{Price} \times \text{Circulating Supply}$$
   
-  and Realized Value is the sum of all coins valued at their last moved price: 
-
-  $\text{Realized Value} = \sum_{i=1}^{N} \text{Price}_i \times \text{Coins}_{i}$
+  and Realized Value is the sum of all coins valued at their last moved price: $$\text{Realized Value} = \sum_{i=1}^{N} \text{Price}_i \times \text{Coins}_{i}$$
 
   1. Network-Value-to-Transaction (NVT) Ratio: Assesses network activity and speculative behavior.
 
-    The NVT ratio compares a cryptocurrency’s market value to its transaction volume, similar to the P/E ratio in stocks. A high NVT suggests overvaluation or speculation, while a low NVT indicates strong network fundamentals and a healthier valuation. This ratio helps detect bubbles and undervaluation, providing insights beyond price movements for better trading strategies. The NVT ratio is given by:
-  
-  $$NVT = \frac{\text{Market Value}}{\text{Transaction Volume}}$$
+    The NVT ratio compares a cryptocurrency’s market value to its transaction volume, similar to the P/E ratio in stocks. A high NVT suggests overvaluation or speculation, while a low NVT indicates strong network fundamentals and a healthier valuation. This ratio helps detect bubbles and undervaluation, providing insights beyond price movements for better trading strategies. The NVT ratio is given by: $$NVT = \frac{\text{Market Value}}{\text{Transaction Volume}}$$
 
   where **Transaction Volume** is the total on-chain transaction value over a given period.
 
@@ -119,12 +111,10 @@ To capture the market dynamics, we construct three main features:
    $$R_t = \log\left(\frac{P_t}{P_{t-1}}\right)$$  
    This measures the relative price change, commonly used in financial modeling.  
 
-2. **Differenced log-MVRV of the cryptocurrency at time** $t$:  
-   $$M'_t = \log\left(\frac{M_t}{M_{t-1}}\right)$$  
+2. **Differenced log-MVRV of the cryptocurrency at time** $t$:  $$M'_t = \log\left(\frac{M_t}{M_{t-1}}\right)$$  
    This represents the percentage change in the MVRV ratio, reflecting valuation shifts.  
 
-3. **Differenced log-NVT of the cryptocurrency at time** $t$:  
-   $$V'_t = \log\left(\frac{V_t}{V_{t-1}}\right)$$  
+3. **Differenced log-NVT of the cryptocurrency at time** $t$: $$V'_t = \log\left(\frac{V_t}{V_{t-1}}\right)$$  
    This tracks the relative change in the NVT ratio, indicating transaction activity variations.  
 
 #### Data Representation  
@@ -151,18 +141,13 @@ where $n$ represents the number of cryptocurrencies in the dataset.
 
 ![](./auto-encode.png)
 
-The **attention-based auto-encoder** model, denoted as $\Phi$, is designed to learn meaningful representations from the feature matrix and reconstruct expected returns:  
-$$
-\Phi: X_t \rightarrow \hat{\mathbf{R}}_t
-$$  
+The **attention-based auto-encoder** model, denoted as $\Phi$, is designed to learn meaningful representations from the feature matrix and reconstruct expected returns: $$\Phi: X_t \rightarrow \hat{\mathbf{R}}_t$$  
 where $\hat{\mathbf{R}}_t$ is the predicted return vector. By leveraging attention mechanisms, this model captures complex dependencies between asset returns and blockchain-based indicators, enhancing anomaly detection capabilities.  
 
 #### Anomaly-Rebalance Strategy
 1. Define Prediction Errors from Training Data
 
-Train a predictive model to estimate asset returns:
-
-$$\hat{R}_t = \Phi(X_{t})$$
+Train a predictive model to estimate asset returns: $$\hat{R}_t = \Phi(X_{t})$$
 
 where $X_t$ represents relevant features at time $t$.
 
