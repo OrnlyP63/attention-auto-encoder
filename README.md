@@ -149,6 +149,7 @@ where $n$ represents the number of cryptocurrencies in the dataset.
 #### Attention Auto-encoder Mapping  
 
 ![](./auto-encode.png)
+
 The **attention-based auto-encoder** model, denoted as $\Phi$, is designed to learn meaningful representations from the feature matrix and reconstruct expected returns:  
 $$
 \Phi: X_t \rightarrow \hat{\mathbf{R}}_t
@@ -198,11 +199,11 @@ $$w_i = \frac{1}{\text{number of selected assets}}$$
 
 ![](./output_new.png)
 
+This picture shows the comparison cumulative returns between simple strategy and our approach strategy.
+
 ---
 
 ## Conclusion & Future Work  
 
 This study introduces a novel anomaly detection-based trading strategy that leverages on-chain data and deep learning. By identifying undervalued assets through predictive errors and rebalancing accordingly, the **Anomaly-Rebalance Strategy** demonstrated superior performance compared to a traditional **Equal Weight Strategy**, outperforming it by a factor of **1.075**. The optimal threshold for detecting anomalies was found to be the **93rd percentile**, highlighting the effectiveness of dynamic thresholding in financial decision-making. This strategy has practical implications for traders and investors, providing a systematic approach to anticipating market shifts. Future work will focus on incorporating additional on-chain metrics, refining model parameters, and deploying the strategy in real-time for automated trading.  
-
-Update
 ---
