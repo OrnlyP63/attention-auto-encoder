@@ -94,7 +94,7 @@ This **attention-enhanced auto-encoder** effectively isolates **irregular market
   
   and Realized Value is the sum of all coins valued at their last moved price: 
 
-  $$\text{Realized Value} = \sum_{i=1}^{N} \text{Price}_i \times \text{Coins}_{i}$$
+  $\text{Realized Value} = \sum_{i=1}^{N} \text{Price}_i \times \text{Coins}_{i}$
 
   1. Network-Value-to-Transaction (NVT) Ratio: Assesses network activity and speculative behavior.
 
