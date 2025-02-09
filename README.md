@@ -70,13 +70,12 @@ where $\mathbf{Z} \in \mathbb{R}^{d\times d}$ and $\mathbf{A} \in \mathbb{R}^{d\
 
 To project the data into a lower-dimensional latent space, we introduce a learnable **context vector** $\mathbf{C} \in \mathbb{R}^d$ and weight matrix $\mathbf{W}_l \in \mathbb{R}^{n\times l}$ with $l < n$:
 
-$$
-\mathbf{S} = \mathbf{C}^\top \mathbf{A}, \quad \mathbf{L} = \text{ReLU}(\mathbf{S} \mathbf{W}_l)
-$$
+$$\mathbf{S} = \mathbf{C}^\top \mathbf{A}, \quad \mathbf{L} = \text{ReLU}(\mathbf{S} \mathbf{W}_l)$$
+
 where $\mathbf{L}$ represents the compressed feature encoding. Finally, the reconstruction step is performed using the weight matrix $\mathbf{W} \in \mathbb{R}^{l\times n}$, producing the estimated cryptocurrency return vector:  
-$$
-\hat{\mathbf{R}_t} = \mathbf{L} \mathbf{W}
-$$
+
+$$\hat{\mathbf{R}_t} = \mathbf{L} \mathbf{W}$$
+
 where $\hat{\mathbf{R}}_t \in \mathbb{R}^{n}$ represents the reconstructed returns.  
 
 This **attention-enhanced auto-encoder** effectively isolates **irregular market behaviors** by comparing actual and reconstructed price movements, identifying anomalies that deviate from learned market dynamics.  
@@ -90,9 +89,11 @@ This **attention-enhanced auto-encoder** effectively isolates **irregular market
   $$MVRV = \frac{\text{Market Value}}{\text{Realized Value}}$$
 
   where **Market value (Market Capitalization)** is the total market worth of all circulating coins 
+
   $$\text{Market Value} = \text{Price} \times \text{Circulating Supply}$$
   
   and Realized Value is the sum of all coins valued at their last moved price: 
+
   $$\text{Realized Value} = \sum_{i=1}^{N} \text{Price}_i \times \text{Coins}_{i}$$
 
   1. Network-Value-to-Transaction (NVT) Ratio: Assesses network activity and speculative behavior.
@@ -160,18 +161,22 @@ where $\hat{\mathbf{R}}_t$ is the predicted return vector. By leveraging attenti
 1. Define Prediction Errors from Training Data
 
 Train a predictive model to estimate asset returns:
+
 $$\hat{R}_t = \Phi(X_{t})$$
 
 where $X_t$ represents relevant features at time $t$.
 
 Compute the prediction errors:
+
 $$\text{errors}_t = \hat{R}_t - R_t$$
+
 where $R_t$ is the actual return at time $t$.
 
 Then, let $\text{errors}_i = \{\text{errors}_1, \text{errors}_2, \ldots, \text{errors}_T\}$ be all errors of training data of asset $i$.
 
 2. Set Anomaly Thresholds
 Define a threshold for each asset based on the **q-th percentile (quantile)** of errors from the training data:
+
 $$T_i = Q_{q}(\text{errors}_i)$$
 
 where $T_i$ is the threshold for asset $i$.
@@ -181,6 +186,7 @@ where $T_i$ is the threshold for asset $i$.
 During the test phase (live trading or backtesting), 
 
 compute new errors using the test set:
+
 $$\text{errors}_t = \hat{R}_t - R_t$$
 
 identify assets where the error is below the threshold:
