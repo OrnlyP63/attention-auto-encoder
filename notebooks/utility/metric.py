@@ -32,7 +32,7 @@ def plot_profit(returns_list: list, labels: list):
     
     plt.title("Cumulative Strategy Returns Over Time", fontsize=14)
     plt.xlabel("Days", fontsize=12)
-    plt.ylabel("Cumulative Returns", fontsize=12)
+    plt.ylabel("Cumulative Returns (%)", fontsize=12)
     
     plt.legend()
     plt.grid(True)  # Add grid for better readability

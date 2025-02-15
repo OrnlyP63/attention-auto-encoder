@@ -136,7 +136,8 @@ For $n$ cryptocurrencies, we define:
 - **Differenced log-MVRV vector**: $\mathbf{M}'_t = [M'_1, M'_2, \dots, M'_n]_t$  
 - **Differenced log-NVT vector**: $\mathbf{V}'_t = [V'_1, V'_2, \dots, V'_n]_t$  
 
-The full feature matrix is then structured as:  
+The full feature matrix is then structured as: 
+
 $$
 X_t = 
 \begin{bmatrix}
@@ -145,6 +146,7 @@ M'_1 & M'_2 & \dots & M'_n \\
 V'_1 & V'_2 & \dots & V'_n
 \end{bmatrix}_t \in \mathbb{R}^{3\times n}
 $$  
+
 where $n$ represents the number of cryptocurrencies in the dataset.  
 
 #### Attention Auto-encoder Mapping  
@@ -152,9 +154,9 @@ where $n$ represents the number of cryptocurrencies in the dataset.
 ![](./auto-encode.png)
 
 The **attention-based auto-encoder** model, denoted as $\Phi$, is designed to learn meaningful representations from the feature matrix and reconstruct expected returns:  
-$$
-\Phi: X_t \rightarrow \hat{\mathbf{R}}_t
-$$  
+
+$$\Phi: X_t \rightarrow \hat{\mathbf{R}}_t$$  
+
 where $\hat{\mathbf{R}}_t$ is the predicted return vector. By leveraging attention mechanisms, this model captures complex dependencies between asset returns and blockchain-based indicators, enhancing anomaly detection capabilities.  
 
 #### Anomaly-Rebalance Strategy
